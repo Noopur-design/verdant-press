@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+.node_modules.lock
+
+# Build output
+dist/
+.vercel/
+.nitro/
+.output/
+.tanstack/
+
+# Local caches
+.cache/
+*.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Environment secrets (app-env.json is committed config, not a secret)
+.env
+.env.*
+!.env.example
