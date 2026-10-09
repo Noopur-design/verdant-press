@@ -86,7 +86,16 @@ export function MotionRoot({ children }: { children: React.ReactNode }) {
     };
   }, [pathname]);
 
-  return <div ref={ref}>{children}</div>;
+  return (
+    <div ref={ref}>
+      {/* Keyed by route so the CSS page-enter transition replays on every
+          navigation. GSAP reveals are queried document-wide, so the extra
+          wrapper does not affect them. */}
+      <div key={pathname} className="page-enter">
+        {children}
+      </div>
+    </div>
+  );
 }
 
 export function CartHydrator() {

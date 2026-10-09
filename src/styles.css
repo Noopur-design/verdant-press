@@ -219,6 +219,40 @@
   }
 }
 
+.page-enter {
+  animation: page-enter 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.select-pop {
+  transform-origin: top center;
+}
+
+.select-pop[data-state="open"] {
+  animation: select-pop 0.16s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@keyframes select-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .bottle-hover {
   transform-origin: 50% 92%;
   transition: transform 0.7s cubic-bezier(0.22, 0.8, 0.28, 1);
@@ -235,7 +269,9 @@
   .fade-up,
   .menu-veil,
   .menu-panel,
-  .menu-link {
+  .menu-link,
+  .page-enter,
+  .select-pop[data-state="open"] {
     animation: none !important;
   }
 

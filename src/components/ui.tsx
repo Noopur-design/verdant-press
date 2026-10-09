@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowUpRight, Minus, Plus } from "lucide-react";
+import * as SelectPrimitive from "@radix-ui/react-select";
+import { ArrowUpRight, Check, ChevronDown, Minus, Plus } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/cn";
 import { useCart } from "@/lib/cart-store";
@@ -67,6 +68,57 @@ export function AddButton({
       {added ? "Added to cart" : "Add to cart"}
       <ArrowUpRight className="size-4" />
     </button>
+  );
+}
+
+export function Select({
+  value,
+  onChange,
+  options,
+  id,
+  ariaLabel,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  options: readonly string[];
+  id?: string;
+  ariaLabel?: string;
+}) {
+  return (
+    <SelectPrimitive.Root value={value} onValueChange={onChange}>
+      <SelectPrimitive.Trigger
+        id={id}
+        aria-label={ariaLabel}
+        className="group flex w-full items-center justify-between gap-3 border-b border-ink/20 bg-transparent py-2 text-left font-sans text-ink outline-none transition-colors focus-visible:border-botanical data-[state=open]:border-botanical"
+      >
+        <SelectPrimitive.Value />
+        <SelectPrimitive.Icon>
+          <ChevronDown className="size-4 text-botanical transition-transform duration-200 group-data-[state=open]:rotate-180" />
+        </SelectPrimitive.Icon>
+      </SelectPrimitive.Trigger>
+      <SelectPrimitive.Portal>
+        <SelectPrimitive.Content
+          position="popper"
+          sideOffset={6}
+          className="select-pop z-[90] max-h-72 w-[var(--radix-select-trigger-width)] overflow-hidden border border-ink/15 bg-paper shadow-xl shadow-ink/10"
+        >
+          <SelectPrimitive.Viewport className="p-1">
+            {options.map((option) => (
+              <SelectPrimitive.Item
+                key={option}
+                value={option}
+                className="flex cursor-pointer select-none items-center justify-between gap-3 px-3 py-2.5 font-sans text-sm text-ink outline-none transition-colors data-[highlighted]:bg-lime data-[state=checked]:font-medium data-[state=checked]:text-botanical"
+              >
+                <SelectPrimitive.ItemText>{option}</SelectPrimitive.ItemText>
+                <SelectPrimitive.ItemIndicator>
+                  <Check className="size-4 text-botanical" />
+                </SelectPrimitive.ItemIndicator>
+              </SelectPrimitive.Item>
+            ))}
+          </SelectPrimitive.Viewport>
+        </SelectPrimitive.Content>
+      </SelectPrimitive.Portal>
+    </SelectPrimitive.Root>
   );
 }
 

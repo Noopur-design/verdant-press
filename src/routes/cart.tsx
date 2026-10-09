@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { formatPrice, getJuice, PRICE_NOTE } from "@/lib/catalog";
+import { formatPrice, getJuice, juices, PRICE_NOTE } from "@/lib/catalog";
 import { useCart } from "@/lib/cart-store";
-import { QtySelector } from "@/components/ui";
+import { AddButton, QtySelector } from "@/components/ui";
 
 export const Route = createFileRoute("/cart")({
   head: () => ({
@@ -34,8 +34,9 @@ function CartPage() {
     <main className="mx-auto max-w-5xl px-5 pb-24 pt-32 md:px-8">
       <p className="font-display text-micro tracking-label text-botanical">DEMO CART</p>
       <h1 className="mt-3 font-display text-editorial font-semibold text-ink">Your bottles.</h1>
-      <p className="mt-3 max-w-xl text-sm text-charcoal/75">
-        This cart lives in your browser. The rupee total is a placeholder. The request below is a demonstration only — no UPI, no card, no delivery.
+      <p className="mt-3 max-w-xl text-sm leading-relaxed text-charcoal/75">
+        Everything here stays in your browser — the rupee total is a placeholder, and checking out is a
+        demonstration only. No UPI, no card, no delivery, and nothing is sent to Verdant Press.
       </p>
 
       {reference ? (
@@ -50,15 +51,73 @@ function CartPage() {
           </Link>
         </div>
       ) : lines.length === 0 ? (
-        <div className="mt-12 grid items-center gap-8 md:grid-cols-2">
-          <img loading="lazy" decoding="async" src="/images/bottle-green.jpg" alt="Green Ritual bottle" className="bottle-hover mx-auto h-80 object-contain" />
-          <div>
-            <h2 className="font-display text-3xl font-semibold text-ink">The cart is empty.</h2>
-            <p className="mt-3 text-sm text-charcoal/75">Start with one of the three signatures.</p>
-            <Link to="/juices" className="mt-6 inline-flex bg-ink px-5 py-3 font-display text-sm text-paper">
-              Explore the Juices
-            </Link>
+        <div className="mt-12">
+          <div className="grid items-center gap-8 border-b border-ink/10 pb-14 md:grid-cols-2">
+            <img
+              loading="lazy"
+              decoding="async"
+              src="/images/bottle-green.jpg"
+              alt="Green Ritual bottle"
+              className="bottle-hover mx-auto h-80 object-contain"
+            />
+            <div>
+              <h2 className="font-display text-3xl font-semibold text-ink">The cart is empty.</h2>
+              <p className="mt-3 max-w-sm text-sm leading-relaxed text-charcoal/75">
+                Nothing pressed yet. Add one of the daily three below — they drop straight into this
+                cart — or browse the full range first.
+              </p>
+              <Link
+                to="/juices"
+                className="btn-press btn-asym mt-6 inline-flex min-h-11 items-center bg-ink px-5 py-3 font-display text-sm text-paper"
+              >
+                Explore the Juices
+              </Link>
+            </div>
           </div>
+
+          <section className="mt-14">
+            <p className="font-display text-micro tracking-label text-botanical">THE DAILY THREE</p>
+            <h3 className="mt-2 font-display text-3xl font-semibold text-ink">Start here.</h3>
+            <div className="mt-8 grid gap-8 sm:grid-cols-3">
+              {juices.map((juice) => (
+                <div key={juice.slug} className="group flex flex-col">
+                  <Link
+                    to="/juices/$slug"
+                    params={{ slug: juice.slug }}
+                    className="relative block overflow-hidden bg-lime"
+                    aria-label={juice.name}
+                  >
+                    <img
+                      loading="lazy"
+                      decoding="async"
+                      src={juice.image}
+                      alt={`${juice.name} bottle`}
+                      className="bottle-hover mx-auto h-64 w-full object-contain p-6"
+                    />
+                  </Link>
+                  <div className="mt-4 flex flex-1 flex-col">
+                    <Link
+                      to="/juices/$slug"
+                      params={{ slug: juice.slug }}
+                      className="font-display text-xl font-semibold text-ink hover:text-botanical"
+                    >
+                      {juice.name}
+                    </Link>
+                    <p className="mt-1 font-serif text-base italic text-botanical">{juice.personality}</p>
+                    <p className="mt-2 font-display text-sm tabular-nums text-charcoal/80">
+                      {formatPrice(juice.price)} · {juice.size}
+                    </p>
+                    <div className="mt-4 flex-1" />
+                    <AddButton slug={juice.slug} className="w-full justify-center" />
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p className="mt-8 max-w-xl text-xs leading-relaxed text-charcoal/60">
+              {PRICE_NOTE} Added bottles are saved on this device only, so your cart is still here when
+              you come back.
+            </p>
+          </section>
         </div>
       ) : (
         <div className="mt-10">

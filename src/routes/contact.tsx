@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { faqs } from "@/lib/catalog";
+import { Select } from "@/components/ui";
+
+const TOPICS = ["The juices", "Ingredients", "Press", "Something else"] as const;
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -61,17 +64,13 @@ function ContactPage() {
                 />
               </Field>
               <Field label="Topic" id="topic">
-                <select
+                <Select
                   id="topic"
+                  ariaLabel="Topic"
                   value={form.topic}
-                  onChange={(event) => setForm({ ...form, topic: event.target.value })}
-                  className="w-full border-b border-ink/20 bg-transparent py-2 outline-none"
-                >
-                  <option>The juices</option>
-                  <option>Ingredients</option>
-                  <option>Press</option>
-                  <option>Something else</option>
-                </select>
+                  onChange={(topic) => setForm({ ...form, topic })}
+                  options={TOPICS}
+                />
               </Field>
               <Field label="Message" id="message">
                 <textarea
